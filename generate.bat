@@ -1,0 +1,1 @@
+flutter pub run pigeon --input pigeons/iap.dart --dart_out lib/generated/pigeon.dart --java_out ./android/src/main/java/com/songbookpro/amazon_iap/Pigeon.java --java_package "com.songbookpro.amazon_iap"
