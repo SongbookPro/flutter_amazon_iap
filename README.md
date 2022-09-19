@@ -1,15 +1,43 @@
-# amazon_iap
+# Amazon IAP
 
-A new Flutter plugin project.
+A flutter abstraction of the Amazon AppStore SDK.
 
-## Getting Started
+## Installation
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+Follow Amazon's instructions to configure the Appstore SDK with your public key:
+https://developer.amazon.com/docs/in-app-purchasing/integrate-appstore-sdk.html#configure_key
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Before using the plugin, you must call:
+```
+await AmazonIAP.instance.setup();
+```
 
+## Usage
+
+As this is a wrapper around the methods exposed by the Amazon Appstore SDK, the user should read Amazon's documentation.
+
+Calls to the Appstore SDK are in the form of function calls, while the responses are delivered as events to the provided streams.
+
+https://developer.amazon.com/docs/in-app-purchasing/iap-implement-iap.html
+
+### Functions
+
+*  `getUserData()`
+*  `getPurchaseUpdates()`
+*  `getProductData()`
+*  `purchase()`
+*  `notifyFulfillment()`
+*  `getInstallDetails()`
+
+### Event streams
+
+* `onProductDataResponse`
+* `onPurchaseResponse`
+* `onPurchaseUpdatesResponse`
+* `onUserDataResponse`
+
+### Obfuscation
+
+If obfuscating the app, the following steps should be taken:
+
+https://developer.amazon.com/docs/in-app-purchasing/iap-obfuscate-the-code.html
