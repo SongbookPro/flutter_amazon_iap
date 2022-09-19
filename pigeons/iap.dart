@@ -1,5 +1,12 @@
 import 'package:pigeon/pigeon.dart';
 
+@ConfigurePigeon(PigeonOptions(
+  dartOut: "lib/generated/pigeon.dart",
+  javaOut: "android/src/main/java/com/songbookpro/amazon_iap/Pigeon.java",
+  javaOptions: JavaOptions(
+    package: "com.songbookpro.amazon_iap",
+  ),
+))
 enum RequestStatus {
   successful,
   failed,
@@ -65,7 +72,7 @@ class Receipt {
 }
 
 class PurchaseUpdatesResponse {
-  final UserData userData;
+  final UserData? userData;
   final RequestStatus requestStatus;
   final List<Receipt?> receipts;
   final bool hasMore;
@@ -81,7 +88,7 @@ class Product {
   final ProductType productType;
   final String sku;
   final String smallIconUrl;
-  final String subscriptionPeriod;
+  final String? subscriptionPeriod;
   final String title;
 
   Product(this.description, this.freeTrialPeriod, this.price, this.productType,
@@ -98,11 +105,18 @@ class ProductDataResponse {
 }
 
 class PurchaseResponse {
-  final UserData userData;
-  final Receipt receipt;
+  final UserData? userData;
+  final Receipt? receipt;
   final PurchaseRequestStatus requestStatus;
 
   PurchaseResponse(this.userData, this.receipt, this.requestStatus);
+}
+
+class InstallDetails {
+  final bool isAmazonStoreInstalled;
+  final bool installedFromAmazonStore;
+
+  InstallDetails(this.isAmazonStoreInstalled, this.installedFromAmazonStore);
 }
 
 @HostApi()
@@ -118,6 +132,8 @@ abstract class AmazonIapApi {
   void purchase(String sku);
 
   void notifyFulfillment(String receiptId, FulfillmentResult fulfillmentResult);
+
+  InstallDetails getInstallationDetails();
 }
 
 @FlutterApi()

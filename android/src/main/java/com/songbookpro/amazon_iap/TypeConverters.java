@@ -136,7 +136,11 @@ public class TypeConverters {
     static Pigeon.UserDataResponse toPigeon(UserDataResponse data) {
         Pigeon.UserDataResponse.Builder builder = new Pigeon.UserDataResponse.Builder();
         builder.setRequestStatus(toPigeon(data.getRequestStatus()));
-        builder.setUserData(toPigeon(data.getUserData()));
+
+        UserData userData = data.getUserData();
+        if (userData != null) {
+            builder.setUserData(toPigeon(userData));
+        }
         return builder.build();
     }
 
@@ -156,15 +160,30 @@ public class TypeConverters {
 
     static Pigeon.PurchaseResponse toPigeon(PurchaseResponse data) {
         Pigeon.PurchaseResponse.Builder builder = new Pigeon.PurchaseResponse.Builder();
-        builder.setReceipt(toPigeon(data.getReceipt()));
         builder.setRequestStatus(toPigeon(data.getRequestStatus()));
-        builder.setUserData(toPigeon(data.getUserData()));
+
+        builder.setReceipt(toPigeon(data.getReceipt()));
+        Receipt receipt = data.getReceipt();
+        if (receipt != null) {
+            builder.setReceipt(toPigeon(receipt));
+        }
+
+        UserData userData = data.getUserData();
+        if (userData != null) {
+            builder.setUserData(toPigeon(userData));
+        }
+
         return builder.build();
     }
 
     static Pigeon.PurchaseUpdatesResponse toPigeon(PurchaseUpdatesResponse data) {
         Pigeon.PurchaseUpdatesResponse.Builder builder = new Pigeon.PurchaseUpdatesResponse.Builder();
-        builder.setUserData(toPigeon(data.getUserData()));
+
+        UserData userData = data.getUserData();
+        if (userData != null) {
+            builder.setUserData(toPigeon(userData));
+        }
+
         builder.setRequestStatus(toPigeon(data.getRequestStatus()));
         builder.setHasMore(data.hasMore());
 

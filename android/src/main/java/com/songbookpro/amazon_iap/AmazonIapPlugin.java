@@ -1,6 +1,7 @@
 package com.songbookpro.amazon_iap;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,12 +20,21 @@ import java.util.Set;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 
+// Required due to https://github.com/flutter/flutter/issues/58913
+class _DummyReply implements Pigeon.AmazonIapCallbackApi.Reply<Void> {
+    @Override
+    public void reply(Void reply) {
+    }
+}
+
 /**
  * AmazonIapPlugin
  */
 public class AmazonIapPlugin implements FlutterPlugin, Pigeon.AmazonIapApi, PurchasingListener {
     private Context applicationContext;
     private Pigeon.AmazonIapCallbackApi callback;
+
+    private _DummyReply _dummyReply = new _DummyReply();
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -73,31 +83,58 @@ public class AmazonIapPlugin implements FlutterPlugin, Pigeon.AmazonIapApi, Purc
         PurchasingService.notifyFulfillment(receiptId, TypeConverters.fromPigeon(fulfillmentResult));
     }
 
+    @NonNull
+    @Override
+    public Pigeon.InstallDetails getInstallationDetails() {
+        Pigeon.InstallDetails.Builder builder = new Pigeon.InstallDetails.Builder();
+        builder.setIsAmazonStoreInstalled(isPackageInstalled(applicationContext, "com.amazon.venezia"));
+        builder.setInstalledFromAmazonStore(isAppInstalledFrom(applicationContext, "amazon"));
+        return builder.build();
+    }
+
     @Override
     public void onUserDataResponse(UserDataResponse userDataResponse) {
         if (callback != null) {
-            callback.onUserDataResponse(TypeConverters.toPigeon(userDataResponse), null);
+            callback.onUserDataResponse(TypeConverters.toPigeon(userDataResponse), _dummyReply);
         }
     }
 
     @Override
     public void onProductDataResponse(ProductDataResponse productDataResponse) {
         if (callback != null) {
-            callback.onProductDataResponse(TypeConverters.toPigeon(productDataResponse), null);
+            callback.onProductDataResponse(TypeConverters.toPigeon(productDataResponse), _dummyReply);
         }
     }
 
     @Override
     public void onPurchaseResponse(PurchaseResponse purchaseResponse) {
         if (callback != null) {
-            callback.onPurchaseResponse(TypeConverters.toPigeon(purchaseResponse), null);
+            callback.onPurchaseResponse(TypeConverters.toPigeon(purchaseResponse), _dummyReply);
         }
     }
 
     @Override
     public void onPurchaseUpdatesResponse(PurchaseUpdatesResponse purchaseUpdatesResponse) {
         if (callback != null) {
-            callback.onPurchaseUpdatesResponse(TypeConverters.toPigeon(purchaseUpdatesResponse), null);
+            callback.onPurchaseUpdatesResponse(TypeConverters.toPigeon(purchaseUpdatesResponse), _dummyReply);
         }
+    }
+
+    private boolean isPackageInstalled(Context ctx, String packageName) {
+        try {
+            ctx.getPackageManager().getPackageInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isAppInstalledFrom(Context ctx, String installer) {
+        String installerPackageName = ctx.getPackageManager().getInstallerPackageName(
+                ctx.getPackageName());
+        if (installer != null && installerPackageName != null && installerPackageName.contains(installer)) {
+            return true;
+        }
+        return false;
     }
 }

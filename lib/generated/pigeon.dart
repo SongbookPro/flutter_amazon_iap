@@ -144,20 +144,20 @@ class Receipt {
 
 class PurchaseUpdatesResponse {
   PurchaseUpdatesResponse({
-    required this.userData,
+    this.userData,
     required this.requestStatus,
     required this.receipts,
     required this.hasMore,
   });
 
-  UserData userData;
+  UserData? userData;
   RequestStatus requestStatus;
   List<Receipt?> receipts;
   bool hasMore;
 
   Object encode() {
     final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
-    pigeonMap['userData'] = userData.encode();
+    pigeonMap['userData'] = userData?.encode();
     pigeonMap['requestStatus'] = requestStatus.index;
     pigeonMap['receipts'] = receipts;
     pigeonMap['hasMore'] = hasMore;
@@ -167,8 +167,9 @@ class PurchaseUpdatesResponse {
   static PurchaseUpdatesResponse decode(Object message) {
     final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
     return PurchaseUpdatesResponse(
-      userData: UserData.decode(pigeonMap['userData']!)
-,
+      userData: pigeonMap['userData'] != null
+          ? UserData.decode(pigeonMap['userData']!)
+          : null,
       requestStatus: RequestStatus.values[pigeonMap['requestStatus']! as int]
 ,
       receipts: (pigeonMap['receipts'] as List<Object?>?)!.cast<Receipt?>(),
@@ -185,7 +186,7 @@ class Product {
     required this.productType,
     required this.sku,
     required this.smallIconUrl,
-    required this.subscriptionPeriod,
+    this.subscriptionPeriod,
     required this.title,
   });
 
@@ -195,7 +196,7 @@ class Product {
   ProductType productType;
   String sku;
   String smallIconUrl;
-  String subscriptionPeriod;
+  String? subscriptionPeriod;
   String title;
 
   Object encode() {
@@ -221,7 +222,7 @@ class Product {
 ,
       sku: pigeonMap['sku']! as String,
       smallIconUrl: pigeonMap['smallIconUrl']! as String,
-      subscriptionPeriod: pigeonMap['subscriptionPeriod']! as String,
+      subscriptionPeriod: pigeonMap['subscriptionPeriod'] as String?,
       title: pigeonMap['title']! as String,
     );
   }
@@ -259,19 +260,19 @@ class ProductDataResponse {
 
 class PurchaseResponse {
   PurchaseResponse({
-    required this.userData,
-    required this.receipt,
+    this.userData,
+    this.receipt,
     required this.requestStatus,
   });
 
-  UserData userData;
-  Receipt receipt;
+  UserData? userData;
+  Receipt? receipt;
   PurchaseRequestStatus requestStatus;
 
   Object encode() {
     final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
-    pigeonMap['userData'] = userData.encode();
-    pigeonMap['receipt'] = receipt.encode();
+    pigeonMap['userData'] = userData?.encode();
+    pigeonMap['receipt'] = receipt?.encode();
     pigeonMap['requestStatus'] = requestStatus.index;
     return pigeonMap;
   }
@@ -279,18 +280,66 @@ class PurchaseResponse {
   static PurchaseResponse decode(Object message) {
     final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
     return PurchaseResponse(
-      userData: UserData.decode(pigeonMap['userData']!)
-,
-      receipt: Receipt.decode(pigeonMap['receipt']!)
-,
+      userData: pigeonMap['userData'] != null
+          ? UserData.decode(pigeonMap['userData']!)
+          : null,
+      receipt: pigeonMap['receipt'] != null
+          ? Receipt.decode(pigeonMap['receipt']!)
+          : null,
       requestStatus: PurchaseRequestStatus.values[pigeonMap['requestStatus']! as int]
 ,
     );
   }
 }
 
+class InstallDetails {
+  InstallDetails({
+    required this.isAmazonStoreInstalled,
+    required this.installedFromAmazonStore,
+  });
+
+  bool isAmazonStoreInstalled;
+  bool installedFromAmazonStore;
+
+  Object encode() {
+    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
+    pigeonMap['isAmazonStoreInstalled'] = isAmazonStoreInstalled;
+    pigeonMap['installedFromAmazonStore'] = installedFromAmazonStore;
+    return pigeonMap;
+  }
+
+  static InstallDetails decode(Object message) {
+    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
+    return InstallDetails(
+      isAmazonStoreInstalled: pigeonMap['isAmazonStoreInstalled']! as bool,
+      installedFromAmazonStore: pigeonMap['installedFromAmazonStore']! as bool,
+    );
+  }
+}
+
 class _AmazonIapApiCodec extends StandardMessageCodec {
   const _AmazonIapApiCodec();
+  @override
+  void writeValue(WriteBuffer buffer, Object? value) {
+    if (value is InstallDetails) {
+      buffer.putUint8(128);
+      writeValue(buffer, value.encode());
+    } else 
+{
+      super.writeValue(buffer, value);
+    }
+  }
+  @override
+  Object? readValueOfType(int type, ReadBuffer buffer) {
+    switch (type) {
+      case 128:       
+        return InstallDetails.decode(readValue(buffer)!);
+      
+      default:      
+        return super.readValueOfType(type, buffer);
+      
+    }
+  }
 }
 
 class AmazonIapApi {
@@ -434,6 +483,33 @@ class AmazonIapApi {
       return;
     }
   }
+
+  Future<InstallDetails> getInstallationDetails() async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.AmazonIapApi.getInstallationDetails', codec, binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(null) as Map<Object?, Object?>?;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      throw PlatformException(
+        code: (error['code'] as String?)!,
+        message: error['message'] as String?,
+        details: error['details'],
+      );
+    } else if (replyMap['result'] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
+    } else {
+      return (replyMap['result'] as InstallDetails?)!;
+    }
+  }
 }
 
 class _AmazonIapCallbackApiCodec extends StandardMessageCodec {
@@ -460,7 +536,7 @@ class _AmazonIapCallbackApiCodec extends StandardMessageCodec {
       buffer.putUint8(132);
       writeValue(buffer, value.encode());
     } else 
-    if (value is Receipt) {
+    if (value is UserData) {
       buffer.putUint8(133);
       writeValue(buffer, value.encode());
     } else 
@@ -495,7 +571,7 @@ class _AmazonIapCallbackApiCodec extends StandardMessageCodec {
         return Receipt.decode(readValue(buffer)!);
       
       case 133:       
-        return Receipt.decode(readValue(buffer)!);
+        return UserData.decode(readValue(buffer)!);
       
       case 134:       
         return UserData.decode(readValue(buffer)!);

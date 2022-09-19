@@ -7,7 +7,8 @@ export 'generated/pigeon.dart';
 class _Callbacks extends AmazonIapCallbackApi {
   final productDataResponseStream = StreamController<ProductDataResponse>();
   final purchaseResponseStream = StreamController<PurchaseResponse>();
-  final purchaseUpdatesResponseStream = StreamController<PurchaseUpdatesResponse>();
+  final purchaseUpdatesResponseStream =
+      StreamController<PurchaseUpdatesResponse>();
   final userDataResponseStream = StreamController<UserDataResponse>();
 
   @override
@@ -54,16 +55,21 @@ class AmazonIAP {
 
   Future getProductData(List<String> sku) => _api.getProductData(sku);
 
-  Future notifyFulfillment(String receiptId, FulfillmentResult fulfillmentResult) =>
+  Future notifyFulfillment(
+          String receiptId, FulfillmentResult fulfillmentResult) =>
       _api.notifyFulfillment(receiptId, fulfillmentResult);
+
+  Future<InstallDetails> getInstallDetails() => _api.getInstallationDetails();
 
   Stream<ProductDataResponse> get onProductDataResponse =>
       _callbacks.productDataResponseStream.stream;
 
-  Stream<PurchaseResponse> get onPurchaseResponse => _callbacks.purchaseResponseStream.stream;
+  Stream<PurchaseResponse> get onPurchaseResponse =>
+      _callbacks.purchaseResponseStream.stream;
 
   Stream<PurchaseUpdatesResponse> get onPurchaseUpdatesResponse =>
       _callbacks.purchaseUpdatesResponseStream.stream;
 
-  Stream<UserDataResponse> get onUserDataResponse => _callbacks.userDataResponseStream.stream;
+  Stream<UserDataResponse> get onUserDataResponse =>
+      _callbacks.userDataResponseStream.stream;
 }

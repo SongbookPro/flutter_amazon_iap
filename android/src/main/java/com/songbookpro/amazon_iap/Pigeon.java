@@ -369,12 +369,9 @@ public class Pigeon {
 
   /** Generated class from Pigeon that represents data sent in messages. */
   public static class PurchaseUpdatesResponse {
-    private @NonNull UserData userData;
-    public @NonNull UserData getUserData() { return userData; }
-    public void setUserData(@NonNull UserData setterArg) {
-      if (setterArg == null) {
-        throw new IllegalStateException("Nonnull field \"userData\" is null.");
-      }
+    private @Nullable UserData userData;
+    public @Nullable UserData getUserData() { return userData; }
+    public void setUserData(@Nullable UserData setterArg) {
       this.userData = setterArg;
     }
 
@@ -409,7 +406,7 @@ public class Pigeon {
     private PurchaseUpdatesResponse() {}
     public static final class Builder {
       private @Nullable UserData userData;
-      public @NonNull Builder setUserData(@NonNull UserData setterArg) {
+      public @NonNull Builder setUserData(@Nullable UserData setterArg) {
         this.userData = setterArg;
         return this;
       }
@@ -512,12 +509,9 @@ public class Pigeon {
       this.smallIconUrl = setterArg;
     }
 
-    private @NonNull String subscriptionPeriod;
-    public @NonNull String getSubscriptionPeriod() { return subscriptionPeriod; }
-    public void setSubscriptionPeriod(@NonNull String setterArg) {
-      if (setterArg == null) {
-        throw new IllegalStateException("Nonnull field \"subscriptionPeriod\" is null.");
-      }
+    private @Nullable String subscriptionPeriod;
+    public @Nullable String getSubscriptionPeriod() { return subscriptionPeriod; }
+    public void setSubscriptionPeriod(@Nullable String setterArg) {
       this.subscriptionPeriod = setterArg;
     }
 
@@ -564,7 +558,7 @@ public class Pigeon {
         return this;
       }
       private @Nullable String subscriptionPeriod;
-      public @NonNull Builder setSubscriptionPeriod(@NonNull String setterArg) {
+      public @NonNull Builder setSubscriptionPeriod(@Nullable String setterArg) {
         this.subscriptionPeriod = setterArg;
         return this;
       }
@@ -696,21 +690,15 @@ public class Pigeon {
 
   /** Generated class from Pigeon that represents data sent in messages. */
   public static class PurchaseResponse {
-    private @NonNull UserData userData;
-    public @NonNull UserData getUserData() { return userData; }
-    public void setUserData(@NonNull UserData setterArg) {
-      if (setterArg == null) {
-        throw new IllegalStateException("Nonnull field \"userData\" is null.");
-      }
+    private @Nullable UserData userData;
+    public @Nullable UserData getUserData() { return userData; }
+    public void setUserData(@Nullable UserData setterArg) {
       this.userData = setterArg;
     }
 
-    private @NonNull Receipt receipt;
-    public @NonNull Receipt getReceipt() { return receipt; }
-    public void setReceipt(@NonNull Receipt setterArg) {
-      if (setterArg == null) {
-        throw new IllegalStateException("Nonnull field \"receipt\" is null.");
-      }
+    private @Nullable Receipt receipt;
+    public @Nullable Receipt getReceipt() { return receipt; }
+    public void setReceipt(@Nullable Receipt setterArg) {
       this.receipt = setterArg;
     }
 
@@ -727,12 +715,12 @@ public class Pigeon {
     private PurchaseResponse() {}
     public static final class Builder {
       private @Nullable UserData userData;
-      public @NonNull Builder setUserData(@NonNull UserData setterArg) {
+      public @NonNull Builder setUserData(@Nullable UserData setterArg) {
         this.userData = setterArg;
         return this;
       }
       private @Nullable Receipt receipt;
-      public @NonNull Builder setReceipt(@NonNull Receipt setterArg) {
+      public @NonNull Builder setReceipt(@Nullable Receipt setterArg) {
         this.receipt = setterArg;
         return this;
       }
@@ -767,9 +755,86 @@ public class Pigeon {
       return pigeonResult;
     }
   }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class InstallDetails {
+    private @NonNull Boolean isAmazonStoreInstalled;
+    public @NonNull Boolean getIsAmazonStoreInstalled() { return isAmazonStoreInstalled; }
+    public void setIsAmazonStoreInstalled(@NonNull Boolean setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"isAmazonStoreInstalled\" is null.");
+      }
+      this.isAmazonStoreInstalled = setterArg;
+    }
+
+    private @NonNull Boolean installedFromAmazonStore;
+    public @NonNull Boolean getInstalledFromAmazonStore() { return installedFromAmazonStore; }
+    public void setInstalledFromAmazonStore(@NonNull Boolean setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"installedFromAmazonStore\" is null.");
+      }
+      this.installedFromAmazonStore = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private InstallDetails() {}
+    public static final class Builder {
+      private @Nullable Boolean isAmazonStoreInstalled;
+      public @NonNull Builder setIsAmazonStoreInstalled(@NonNull Boolean setterArg) {
+        this.isAmazonStoreInstalled = setterArg;
+        return this;
+      }
+      private @Nullable Boolean installedFromAmazonStore;
+      public @NonNull Builder setInstalledFromAmazonStore(@NonNull Boolean setterArg) {
+        this.installedFromAmazonStore = setterArg;
+        return this;
+      }
+      public @NonNull InstallDetails build() {
+        InstallDetails pigeonReturn = new InstallDetails();
+        pigeonReturn.setIsAmazonStoreInstalled(isAmazonStoreInstalled);
+        pigeonReturn.setInstalledFromAmazonStore(installedFromAmazonStore);
+        return pigeonReturn;
+      }
+    }
+    @NonNull Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("isAmazonStoreInstalled", isAmazonStoreInstalled);
+      toMapResult.put("installedFromAmazonStore", installedFromAmazonStore);
+      return toMapResult;
+    }
+    static @NonNull InstallDetails fromMap(@NonNull Map<String, Object> map) {
+      InstallDetails pigeonResult = new InstallDetails();
+      Object isAmazonStoreInstalled = map.get("isAmazonStoreInstalled");
+      pigeonResult.setIsAmazonStoreInstalled((Boolean)isAmazonStoreInstalled);
+      Object installedFromAmazonStore = map.get("installedFromAmazonStore");
+      pigeonResult.setInstalledFromAmazonStore((Boolean)installedFromAmazonStore);
+      return pigeonResult;
+    }
+  }
   private static class AmazonIapApiCodec extends StandardMessageCodec {
     public static final AmazonIapApiCodec INSTANCE = new AmazonIapApiCodec();
     private AmazonIapApiCodec() {}
+    @Override
+    protected Object readValueOfType(byte type, ByteBuffer buffer) {
+      switch (type) {
+        case (byte)128:         
+          return InstallDetails.fromMap((Map<String, Object>) readValue(buffer));
+        
+        default:        
+          return super.readValueOfType(type, buffer);
+        
+      }
+    }
+    @Override
+    protected void writeValue(ByteArrayOutputStream stream, Object value)     {
+      if (value instanceof InstallDetails) {
+        stream.write(128);
+        writeValue(stream, ((InstallDetails) value).toMap());
+      } else 
+{
+        super.writeValue(stream, value);
+      }
+    }
   }
 
   /** Generated interface from Pigeon that represents a handler of messages from Flutter.*/
@@ -780,6 +845,7 @@ public class Pigeon {
     void getProductData(@NonNull List<String> skus);
     void purchase(@NonNull String sku);
     void notifyFulfillment(@NonNull String receiptId, @NonNull FulfillmentResult fulfillmentResult);
+    @NonNull InstallDetails getInstallationDetails();
 
     /** The codec used by AmazonIapApi. */
     static MessageCodec<Object> getCodec() {
@@ -926,6 +992,25 @@ public class Pigeon {
           channel.setMessageHandler(null);
         }
       }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(binaryMessenger, "dev.flutter.pigeon.AmazonIapApi.getInstallationDetails", getCodec());
+        if (api != null) {
+          channel.setMessageHandler((message, reply) -> {
+            Map<String, Object> wrapped = new HashMap<>();
+            try {
+              InstallDetails output = api.getInstallationDetails();
+              wrapped.put("result", output);
+            }
+            catch (Error | RuntimeException exception) {
+              wrapped.put("error", wrapError(exception));
+            }
+            reply.reply(wrapped);
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
     }
   }
   private static class AmazonIapCallbackApiCodec extends StandardMessageCodec {
@@ -950,7 +1035,7 @@ public class Pigeon {
           return Receipt.fromMap((Map<String, Object>) readValue(buffer));
         
         case (byte)133:         
-          return Receipt.fromMap((Map<String, Object>) readValue(buffer));
+          return UserData.fromMap((Map<String, Object>) readValue(buffer));
         
         case (byte)134:         
           return UserData.fromMap((Map<String, Object>) readValue(buffer));
@@ -985,9 +1070,9 @@ public class Pigeon {
         stream.write(132);
         writeValue(stream, ((Receipt) value).toMap());
       } else 
-      if (value instanceof Receipt) {
+      if (value instanceof UserData) {
         stream.write(133);
-        writeValue(stream, ((Receipt) value).toMap());
+        writeValue(stream, ((UserData) value).toMap());
       } else 
       if (value instanceof UserData) {
         stream.write(134);
