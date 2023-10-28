@@ -35,6 +35,6 @@ android {
 }
 
 dependencies {
-    api 'com.amazon.device:amazon-appstore-sdk:3.0.3'
+    api 'com.amazon.device:amazon-appstore-sdk:3.0.4'
 }
 
