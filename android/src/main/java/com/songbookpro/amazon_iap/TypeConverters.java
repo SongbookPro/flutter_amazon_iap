@@ -187,7 +187,7 @@ public class TypeConverters {
         builder.setRequestStatus(toPigeon(data.getRequestStatus()));
         builder.setHasMore(data.hasMore());
 
-        ArrayList<Pigeon.Receipt> receipts = new ArrayList();
+        ArrayList<Pigeon.Receipt> receipts = new ArrayList<Pigeon.Receipt>();
         for (Receipt receipt : data.getReceipts()) {
             receipts.add(toPigeon(receipt));
         }

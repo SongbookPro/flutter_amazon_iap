@@ -21,9 +21,13 @@ import java.util.Set;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 
 // Required due to https://github.com/flutter/flutter/issues/58913
-class _DummyReply implements Pigeon.AmazonIapCallbackApi.Reply<Void> {
+class _DummyReply implements Pigeon.Result<Void> {
     @Override
-    public void reply(Void reply) {
+    public void success(@NonNull Void result) {
+    }
+
+    @Override
+    public void error(@NonNull Throwable error) {
     }
 }
 
@@ -39,21 +43,22 @@ public class AmazonIapPlugin implements FlutterPlugin, Pigeon.AmazonIapApi, Purc
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         applicationContext = flutterPluginBinding.getApplicationContext();
-        Pigeon.AmazonIapApi.setup(flutterPluginBinding.getBinaryMessenger(), this);
+        Pigeon.AmazonIapApi.setUp(flutterPluginBinding.getBinaryMessenger(), this);
         callback = new Pigeon.AmazonIapCallbackApi(flutterPluginBinding.getBinaryMessenger());
     }
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         applicationContext = null;
-        Pigeon.AmazonIapApi.setup(binding.getBinaryMessenger(), null);
+        Pigeon.AmazonIapApi.setUp(binding.getBinaryMessenger(), null);
         callback = null;
     }
 
     @Override
     public void setup() {
         PurchasingService.registerListener(applicationContext, this);
-        Log.d("AmazonIAP", "Appstore SDK Mode: " + LicensingService.getAppstoreSDKMode()); // Checks if app is in test mode
+        Log.d("AmazonIAP", "Appstore SDK Mode: " + LicensingService.getAppstoreSDKMode()); // Checks if app is in test
+                                                                                           // mode
     }
 
     @Override

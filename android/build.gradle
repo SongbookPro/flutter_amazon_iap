@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'com.android.tools.build:gradle:7.3.0'
     }
 }
 
@@ -22,7 +22,11 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 31
+    if (project.android.hasProperty("namespace")) {
+        namespace 'com.songbookpro.amazon_iap'
+    }
+
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -30,11 +34,10 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
+    }
+
+    dependencies {
+        api 'com.amazon.device:amazon-appstore-sdk:3.0.4'
     }
 }
-
-dependencies {
-    api 'com.amazon.device:amazon-appstore-sdk:3.0.4'
-}
-

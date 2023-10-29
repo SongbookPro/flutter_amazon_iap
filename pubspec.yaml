@@ -4,8 +4,8 @@ version: 0.1.0
 homepage: https://github.com/SongbookPro/flutter_amazon_iap
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
-  flutter: ">=2.5.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
@@ -16,7 +16,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
-  pigeon: ^4.0.3
+  pigeon: ^12.0.0
 
 flutter:
   plugin:

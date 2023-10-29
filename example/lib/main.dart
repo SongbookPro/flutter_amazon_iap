@@ -8,7 +8,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -53,8 +53,7 @@ class _MyAppState extends State<MyApp> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                  'Amazon appstore installed: ${installDetails?.isAmazonStoreInstalled ?? "pending"}'),
+              Text('Amazon appstore installed: ${installDetails?.isAmazonStoreInstalled ?? "pending"}'),
               Text(
                 'User id: ${userData?.userId ?? "pending"}',
                 overflow: TextOverflow.ellipsis,

@@ -7,8 +7,7 @@ export 'generated/pigeon.dart';
 class _Callbacks extends AmazonIapCallbackApi {
   final productDataResponseStream = StreamController<ProductDataResponse>();
   final purchaseResponseStream = StreamController<PurchaseResponse>();
-  final purchaseUpdatesResponseStream =
-      StreamController<PurchaseUpdatesResponse>();
+  final purchaseUpdatesResponseStream = StreamController<PurchaseUpdatesResponse>();
   final userDataResponseStream = StreamController<UserDataResponse>();
 
   @override
@@ -42,34 +41,29 @@ class AmazonIAP {
 
   AmazonIAP._();
 
-  Future setup() async {
+  Future<void> setup() async {
     AmazonIapCallbackApi.setup(_callbacks);
     await _api.setup();
   }
 
-  Future purchase(String sku) => _api.purchase(sku);
+  Future<void> purchase(String sku) => _api.purchase(sku);
 
-  Future getUserData() => _api.getUserData();
+  Future<void> getUserData() => _api.getUserData();
 
-  Future getPurchaseUpdates(bool reset) => _api.getPurchaseUpdates(reset);
+  Future<void> getPurchaseUpdates(bool reset) => _api.getPurchaseUpdates(reset);
 
-  Future getProductData(List<String> sku) => _api.getProductData(sku);
+  Future<void> getProductData(List<String> sku) => _api.getProductData(sku);
 
-  Future notifyFulfillment(
-          String receiptId, FulfillmentResult fulfillmentResult) =>
+  Future<void> notifyFulfillment(String receiptId, FulfillmentResult fulfillmentResult) =>
       _api.notifyFulfillment(receiptId, fulfillmentResult);
 
   Future<InstallDetails> getInstallDetails() => _api.getInstallationDetails();
 
-  Stream<ProductDataResponse> get onProductDataResponse =>
-      _callbacks.productDataResponseStream.stream;
+  Stream<ProductDataResponse> get onProductDataResponse => _callbacks.productDataResponseStream.stream;
 
-  Stream<PurchaseResponse> get onPurchaseResponse =>
-      _callbacks.purchaseResponseStream.stream;
+  Stream<PurchaseResponse> get onPurchaseResponse => _callbacks.purchaseResponseStream.stream;
 
-  Stream<PurchaseUpdatesResponse> get onPurchaseUpdatesResponse =>
-      _callbacks.purchaseUpdatesResponseStream.stream;
+  Stream<PurchaseUpdatesResponse> get onPurchaseUpdatesResponse => _callbacks.purchaseUpdatesResponseStream.stream;
 
-  Stream<UserDataResponse> get onUserDataResponse =>
-      _callbacks.userDataResponseStream.stream;
+  Stream<UserDataResponse> get onUserDataResponse => _callbacks.userDataResponseStream.stream;
 }
