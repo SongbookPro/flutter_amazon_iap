@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 
 // Required due to https://github.com/flutter/flutter/issues/58913
 class _DummyReply implements Pigeon.Result<Void> {
@@ -34,7 +36,7 @@ class _DummyReply implements Pigeon.Result<Void> {
 /**
  * AmazonIapPlugin
  */
-public class AmazonIapPlugin implements FlutterPlugin, Pigeon.AmazonIapApi, PurchasingListener {
+public class AmazonIapPlugin implements FlutterPlugin, Pigeon.AmazonIapApi, PurchasingListener, ActivityAware {
     private Context applicationContext;
     private Pigeon.AmazonIapCallbackApi callback;
 
@@ -52,6 +54,29 @@ public class AmazonIapPlugin implements FlutterPlugin, Pigeon.AmazonIapApi, Purc
         applicationContext = null;
         Pigeon.AmazonIapApi.setUp(binding.getBinaryMessenger(), null);
         callback = null;
+    }
+
+    @Override
+    public void onAttachedToActivity​(@NonNull ActivityPluginBinding binding) {
+        if (isPackageInstalled(applicationContext, "com.amazon.venezia")
+                && isAppInstalledFrom(applicationContext, "amazon")) {
+            // Call setup
+            setup();
+        }
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges​(@NonNull ActivityPluginBinding binding) {
+        onAttachedToActivity​(binding);
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+        onDetachedFromActivity();
     }
 
     @Override
