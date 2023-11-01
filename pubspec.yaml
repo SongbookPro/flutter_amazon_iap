@@ -1,6 +1,6 @@
 name: amazon_iap
 description: A flutter abstraction of the Amazon AppStore SDK.
-version: 0.2.0
+version: 0.2.1
 homepage: https://github.com/SongbookPro/flutter_amazon_iap
 
 environment:

@@ -1,3 +1,7 @@
+## 0.2.1
+
+* Fixed issue where purchase dialog would not display if `setup` called to early
+
 ## 0.2.0
 
 * Updated Amazon SDK to v3.0.4
