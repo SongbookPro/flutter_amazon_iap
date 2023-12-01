@@ -1,3 +1,7 @@
+## 0.2.2
+
+* Resolve potential null exception in type conversions
+
 ## 0.2.1
 
 * Fixed issue where purchase dialog would not display if `setup` called to early

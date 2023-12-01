@@ -162,7 +162,6 @@ public class TypeConverters {
         Pigeon.PurchaseResponse.Builder builder = new Pigeon.PurchaseResponse.Builder();
         builder.setRequestStatus(toPigeon(data.getRequestStatus()));
 
-        builder.setReceipt(toPigeon(data.getReceipt()));
         Receipt receipt = data.getReceipt();
         if (receipt != null) {
             builder.setReceipt(toPigeon(receipt));
